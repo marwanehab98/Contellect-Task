@@ -28,9 +28,11 @@
                 <div class="card">
                     <form (ngSubmit)="save(contact)" #loginForm="ngForm">
                         <div class="card-header">
-                            <button type="button" (click)="toggleLock(contact._id)">{{unlocked !== contact._id ? "Edit ✎"
+                            <button type="button" (click)="toggleLock(contact._id)">{{unlocked !== contact._id ? "Edit
+                                ✎"
                                 : "Cancel ⨯"}}</button>
-                            <button style="color: rgb(200 0 0);" type="button" (click)="deleteContact(contact._id)">Delete 🗑</button>
+                            <button style="color: rgb(200 0 0);" type="button"
+                                (click)="deleteContact(contact._id)">Delete 🗑</button>
                         </div>
                         <label class="card-label">
                             Name:
@@ -52,7 +54,8 @@
                             <input type="text" name="notes" [(ngModel)]="contact.notes" ngModel required
                                 [disabled]="unlocked !== contact._id">
                         </label>
-                        <button style="margin-top: 10px; width: fit-content; align-self: end;" type="submit" [disabled]="unlocked !== contact._id">Save 💾</button>
+                        <button style="margin-top: 10px; width: fit-content; align-self: end;" type="submit"
+                            [disabled]="unlocked !== contact._id">Save 💾</button>
                     </form>
                 </div>
             </div>
@@ -77,18 +80,18 @@
                         Notes:
                         <input type="text" name="notes" [(ngModel)]="details.notes" ngModel required>
                     </label>
-                    <button style="margin-top: 10px; width: fit-content; align-self: end;" type="submit">Save 💾</button>
+                    <button style="margin-top: 10px; width: fit-content; align-self: end;" type="submit">Save
+                        💾</button>
                 </form>
             </div>
         </div>
     </div>
     <div class="pagination">
         <button (click)="previousPage()" [disabled]="offset === 0">❮</button>
-        <select (change)="selectPage($event)" name="pages" id="pages"[(ngModel)]="offset">
+        <select (change)="selectPage($event)" name="pages" id="pages" [(ngModel)]="offset">
             <option *ngFor="let x of [].constructor(numberOfPages); let i = index" value={{i}}>{{i+1}}</option>
         </select>
         <button (click)="nextPage()" [disabled]="offset === numberOfPages-1">❯</button>
     </div>
 </div>
-<div id="snackbar">Added contact</div> 
-<!-- {{count}} -->
+<div id="snackbar">Added contact</div>

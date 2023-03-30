@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { GetContactsService } from '../get-contacts.service';
 
@@ -29,27 +28,8 @@ export class MainViewComponent implements OnInit {
     this.getContacts();
   }
 
-  selectPage($event: any): void {
-    // console.log($event.target.value)
-    this.offset = $event.target.value;
-    this.getContacts();
-  }
 
-  nextPage() {
-    this.offset = (this.offset + 1) % this.numberOfPages;
-    this.getContacts();
-  }
-
-  previousPage() {
-    this.offset = (this.offset - 1);
-    this.getContacts();
-  }
-
-  filterContacts() {
-    // console.log(this.filter);
-    this.getContacts(this.filter);
-  }
-
+  // CRUD OPERATIONS
   private getContacts(filter: any = null) {
     this.getContactsService.getContacts(this.user._id, this.offset * 5, filter)
       .pipe()
@@ -65,20 +45,6 @@ export class MainViewComponent implements OnInit {
       });
   }
 
-  logout(): void {
-    localStorage.removeItem('user')
-    this.router.navigateByUrl('/login');
-  }
-
-  showContactDetails(index: number): void {
-    this.details = this.contacts[index];
-  }
-
-  toggleLock(_id: string): void {
-    if (this.unlocked === '') this.unlocked = _id;
-    else this.unlocked = ''
-  }
-
   save(contact: any = null): void {
     if (this.newContact) {
       this.getContactsService.addContact({ ...this.details, userId: this.user._id })
@@ -87,15 +53,10 @@ export class MainViewComponent implements OnInit {
           if (res) {
             this.newContact = false;
             var x = document.getElementById("snackbar")!;
-
-            // Add the "show" class to DIV
             x.className = "show";
-
-            // After 3 seconds, remove the show class from DIV
             setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
             this.getContacts()
           }
-          // else alert("marwan")
         })
     }
     else {
@@ -105,15 +66,6 @@ export class MainViewComponent implements OnInit {
           if (res) this.unlocked = '';
         })
     }
-  }
-
-  addContact(): void {
-    this.details = {};
-    this.newContact = true;
-  }
-
-  cancelAdd(): void {
-    this.newContact = false;
   }
 
   deleteContact(_id: string): void {
@@ -126,5 +78,53 @@ export class MainViewComponent implements OnInit {
           }
         })
     }
+  }
+
+
+  // PAGE CHANGE
+  selectPage($event: any): void {
+    this.offset = $event.target.value;
+    this.getContacts();
+  }
+
+  nextPage() {
+    this.offset = (this.offset + 1) % this.numberOfPages;
+    this.getContacts();
+  }
+
+  previousPage() {
+    this.offset = (this.offset - 1);
+    this.getContacts();
+  }
+
+
+  // HELPERS
+  filterContacts() {
+    this.getContacts(this.filter);
+  }
+
+  toggleLock(_id: string): void {
+    if (this.unlocked === '') this.unlocked = _id;
+    else this.unlocked = ''
+  }
+
+  addContact(): void {
+    this.details = {};
+    this.newContact = true;
+  }
+
+  cancelAdd(): void {
+    this.newContact = false;
+  }
+
+  showContactDetails(index: number): void {
+    this.details = this.contacts[index];
+  }
+
+
+  // LOGOUT
+  logout(): void {
+    localStorage.removeItem('user')
+    this.router.navigateByUrl('/login');
   }
 }

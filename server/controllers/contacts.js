@@ -35,14 +35,6 @@ export const getContacts = async (req, res) => {
         Object.keys(filter).forEach(key => {
             filter[key] = { $regex: new RegExp(filter[key], "i") }
         });
-        console.log(filter)
-        // const filter = {
-        //     userId: req.query.userId,
-        //     name: { $regex: new RegExp(req.query.name, "i") },
-        //     phone: { $regex: new RegExp(req.query.phone, "i") },
-        //     address: { $regex: new RegExp(req.query.address, "i") },
-        //     notes: { $regex: new RegExp(req.query.notes, "i") }
-        // }
         delete filter.offset;
 
         const contacts = await Contact.find(filter).sort({ name: 1 }).limit(5).skip((offset));
