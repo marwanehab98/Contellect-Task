@@ -46,12 +46,21 @@ button:hover {
 }
 
 .pagination button, .pagination select {
+    background-color: transparent;
     color: black;
     float: left;
     padding: 8px 16px;
     text-decoration: none;
     transition: background-color .3s;
     border: 1px solid #ddd;
+}
+
+.pagination button:disabled {
+    background-color: #e9e9ed;
+}
+
+.pagination button:disabled:hover {
+    cursor: default;
 }
 
 .top-bar, .filter-bar {

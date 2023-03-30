@@ -37,7 +37,7 @@ export const getContacts = async (req, res) => {
         });
         delete filter.offset;
 
-        const contacts = await Contact.find(filter).sort({ name: 1 }).limit(5).skip((offset));
+        const contacts = await Contact.find(filter).limit(5).skip((offset));
         const count = await Contact.countDocuments(filter);
 
         res.status(200).json({ contacts, count });

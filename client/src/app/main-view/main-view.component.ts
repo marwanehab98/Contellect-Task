@@ -20,6 +20,7 @@ export class MainViewComponent implements OnInit {
   user: any;
   offset: number = 0;
   filter = { name: '', phone: '', address: '', notes: '' };
+  message = '';
 
   constructor(private getContactsService: GetContactsService, private router: Router) { }
 
@@ -39,9 +40,7 @@ export class MainViewComponent implements OnInit {
           this.count = res.count;
           this.numberOfPages = Math.ceil(res.count / 5);
         }
-        else {
-          console.log("Wrong credentials");
-        };
+        else alert("Something went wrong");
       });
   }
 
@@ -52,18 +51,27 @@ export class MainViewComponent implements OnInit {
         .subscribe(res => {
           if (res) {
             this.newContact = false;
+            this.message = 'Added Contact'
             var x = document.getElementById("snackbar")!;
             x.className = "show";
             setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
             this.getContacts()
           }
+          else alert("Something went wrong");
         })
     }
     else {
       this.getContactsService.updateContact(contact)
         .pipe()
         .subscribe(res => {
-          if (res) this.unlocked = '';
+          if (res) {
+            this.message = 'Updated Contact'
+            var x = document.getElementById("snackbar")!;
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+            this.unlocked = ''
+          }
+          else alert("Something went wrong");
         })
     }
   }
@@ -74,8 +82,13 @@ export class MainViewComponent implements OnInit {
         .pipe()
         .subscribe(res => {
           if (res) {
+            this.message = 'Deleting Contact...'
+            var x = document.getElementById("snackbar")!;
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
             this.getContacts()
           }
+          else alert("Something went wrong");
         })
     }
   }
@@ -83,20 +96,10 @@ export class MainViewComponent implements OnInit {
 
   // PAGE CHANGE
   selectPage($event: any): void {
-    this.offset = $event.target.value;
+    this.offset = Number.isInteger($event) ? $event : $event.target.value;
+    this.contacts = [];
     this.getContacts();
   }
-
-  nextPage() {
-    this.offset = (this.offset + 1) % this.numberOfPages;
-    this.getContacts();
-  }
-
-  previousPage() {
-    this.offset = (this.offset - 1);
-    this.getContacts();
-  }
-
 
   // HELPERS
   filterContacts() {

@@ -87,11 +87,11 @@
         </div>
     </div>
     <div class="pagination">
-        <button (click)="previousPage()" [disabled]="offset === 0">❮</button>
+        <button (click)="selectPage(offset - 1)" [disabled]="offset == 0">❮</button>
         <select (change)="selectPage($event)" name="pages" id="pages" [(ngModel)]="offset">
             <option *ngFor="let x of [].constructor(numberOfPages); let i = index" value={{i}}>{{i+1}}</option>
         </select>
-        <button (click)="nextPage()" [disabled]="offset === numberOfPages-1">❯</button>
+        <button (click)="selectPage(offset + 1)" [disabled]="offset == numberOfPages-1">❯</button>
     </div>
 </div>
-<div id="snackbar">Added contact</div>
+<div id="snackbar">{{message}}</div>
