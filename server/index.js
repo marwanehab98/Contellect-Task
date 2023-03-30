@@ -25,8 +25,8 @@ app.use("/auth", authRoutes);
 app.use("/contacts", contactRoutes);
 
 /* MONGOOSE SETUP */
-const PORT = process.env.PORT || 6001;
-mongoose.connect(process.env.MONGO_URL, {
+const PORT = 3001 || 6001;
+mongoose.connect('mongodb+srv://marwanelsheikh:Ks6GICoJCYUpDj3C@cluster0.gvqo3nt.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
