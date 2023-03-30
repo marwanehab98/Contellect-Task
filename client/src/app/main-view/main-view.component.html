@@ -1,0 +1,94 @@
+<div class="content" role="main">
+    <div>
+        <div class="top-bar">
+            <button (click)="addContact()">Add contact +</button>
+            <button (click)="logout()">Logout</button>
+        </div>
+        <div class="filter-bar">
+            <label>
+                Name:
+                <input type="text" name="name" [(ngModel)]="filter && filter.name" ngModel required>
+            </label>
+            <label>
+                Phone:
+                <input type="text" name="phone" [(ngModel)]="filter && filter.phone" ngModel required>
+            </label>
+            <label>
+                Address:
+                <input type="text" name="address" [(ngModel)]="filter && filter.address" ngModel required>
+            </label>
+            <label>
+                Notes:
+                <input type="text" name="notes" [(ngModel)]="filter && filter.notes" ngModel required>
+            </label>
+            <button (click)="filterContacts()">Filter</button>
+        </div>
+        <div class="contacts-grid">
+            <div *ngFor="let contact of contacts; let i = index">
+                <div class="card">
+                    <form (ngSubmit)="save(contact)" #loginForm="ngForm">
+                        <div class="card-header">
+                            <button type="button" (click)="toggleLock(contact._id)">{{unlocked !== contact._id ? "Edit ✎"
+                                : "Cancel ⨯"}}</button>
+                            <button style="color: rgb(200 0 0);" type="button" (click)="deleteContact(contact._id)">Delete 🗑</button>
+                        </div>
+                        <label class="card-label">
+                            Name:
+                            <input type="text" name="name" [(ngModel)]="contact.name" ngModel required
+                                [disabled]="unlocked !== contact._id">
+                        </label>
+                        <label class="card-label">
+                            Phone:
+                            <input type="text" name="phone" [(ngModel)]="contact.phone" ngModel required
+                                [disabled]="unlocked !== contact._id">
+                        </label>
+                        <label class="card-label">
+                            Address:
+                            <input type="text" name="address" [(ngModel)]="contact.address" ngModel required
+                                [disabled]="unlocked !== contact._id">
+                        </label>
+                        <label class="card-label">
+                            Notes:
+                            <input type="text" name="notes" [(ngModel)]="contact.notes" ngModel required
+                                [disabled]="unlocked !== contact._id">
+                        </label>
+                        <button style="margin-top: 10px; width: fit-content; align-self: end;" type="submit" [disabled]="unlocked !== contact._id">Save 💾</button>
+                    </form>
+                </div>
+            </div>
+            <div *ngIf="newContact" class="card">
+                <form (ngSubmit)="save()" #loginForm="ngForm">
+                    <div>
+                        <button type="button" (click)="cancelAdd()">Cancel ⨯</button>
+                    </div>
+                    <label class="card-label">
+                        Name:
+                        <input type="text" name="name" [(ngModel)]="details.name" ngModel required>
+                    </label>
+                    <label class="card-label">
+                        Phone:
+                        <input type="text" name="phone" [(ngModel)]="details.phone" ngModel required>
+                    </label>
+                    <label class="card-label">
+                        Address:
+                        <input type="text" name="address" [(ngModel)]="details.address" ngModel required>
+                    </label>
+                    <label class="card-label">
+                        Notes:
+                        <input type="text" name="notes" [(ngModel)]="details.notes" ngModel required>
+                    </label>
+                    <button style="margin-top: 10px; width: fit-content; align-self: end;" type="submit">Save 💾</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="pagination">
+        <button (click)="previousPage()" [disabled]="offset === 0">❮</button>
+        <select (change)="selectPage($event)" name="pages" id="pages"[(ngModel)]="offset">
+            <option *ngFor="let x of [].constructor(numberOfPages); let i = index" value={{i}}>{{i+1}}</option>
+        </select>
+        <button (click)="nextPage()" [disabled]="offset === numberOfPages-1">❯</button>
+    </div>
+</div>
+<div id="snackbar">Added contact</div> 
+<!-- {{count}} -->

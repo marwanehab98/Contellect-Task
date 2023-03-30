@@ -1,0 +1,16 @@
+<div style="display: flex; justify-content: center;">
+  <h1>Contellect Task</h1>
+</div>
+<form (ngSubmit)="login()" #loginForm="ngForm">
+  <label>
+    Username:
+    <input type="text" name="username" [(ngModel)]="username" ngModel required>
+  </label>
+  <label>
+    Password:
+    <input type="password" name="password" [(ngModel)]="password" ngModel required>
+  </label>
+  <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
+</form>
+<!-- <p>{{user}}</p> -->
+<!-- <p>hello</p> -->
