@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GetContactsService } from '../get-contacts.service';
-
+import { Subscription, startWith } from 'rxjs';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { GetContactsService } from '../get-contacts.service';
   templateUrl: './main-view.component.html',
   styleUrls: ['./main-view.component.css']
 })
-export class MainViewComponent implements OnInit {
+export class MainViewComponent implements OnInit, OnDestroy {
 
   contacts: any;
   count: number | undefined;
@@ -17,6 +17,8 @@ export class MainViewComponent implements OnInit {
   details: any = {};
   unlocked: string = '';
   newContact = false;
+  // editedContact: any;
+  private _contactSub: Subscription = new Subscription;
   user: any;
   offset: number = 0;
   filter = { name: '', phone: '', address: '', notes: '' };
@@ -27,12 +29,22 @@ export class MainViewComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user')!);
     this.getContacts();
+    this._contactSub = this.getContactsService.editedContact.subscribe(editedContact => {
+      // console.log(editedContact);
+      this.contacts = this.contacts.map((contact: any) => {
+        if(contact._id === editedContact._id) return editedContact;
+        else return contact;
+      })  
+    });
   }
 
+  ngOnDestroy() {
+    this._contactSub.unsubscribe();
+  }
 
   // CRUD OPERATIONS
   private getContacts(filter: any = null) {
-    this.getContactsService.getContacts(this.user._id, this.offset * 5, filter)
+    this.getContactsService.getContacts(this.offset * 5, filter)
       .pipe()
       .subscribe(res => {
         if (res) {

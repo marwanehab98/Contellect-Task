@@ -27,9 +27,7 @@ export const createContact = async (req, res) => {
 /* READ */
 export const getContacts = async (req, res) => {
     try {
-        const user = await User.findById(req.query.userId);
         const offset = req.query.offset;
-        if (!user) return res.status(409).json({ message: "Something wrong with the request" });
 
         const filter = req.query;
         Object.keys(filter).forEach(key => {
@@ -43,6 +41,7 @@ export const getContacts = async (req, res) => {
         res.status(200).json({ contacts, count });
     } catch (error) {
         res.status(404).json({ message: error.message });
+        console.log(error)
     }
 }
 
